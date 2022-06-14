@@ -1,0 +1,11 @@
+       Schema::create('banners', function (Blueprint $table) {
+            $table->id();
+            $table->string('tittle_color', 255);
+            $table->string('background_color', 255);
+            $table->string('indicator_color', 255);
+            $table->string('button_color', 255);
+            $table->integer('position');
+            $table->boolean('active');
+            $table->timestamps();
+        });
+
