@@ -8,6 +8,7 @@ use App\Repositories\Interfaces\CompanyRepoInterface;
 use App\Repositories\TaxRepository\TaxRepository;
 use App\Repositories\UserRepository\UserRepoRepository;
 use App\Services\Interfaces\CompanyServiceInterface;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\all;
 
@@ -31,7 +32,7 @@ class CompanyController extends AdminBaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function index(CompanyRepoInterface $companyRepo)
     {
@@ -44,7 +45,7 @@ class CompanyController extends AdminBaseController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function create()
     {
@@ -73,7 +74,7 @@ class CompanyController extends AdminBaseController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|View
      */
     public function show($id)
     {
@@ -84,9 +85,9 @@ class CompanyController extends AdminBaseController
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit($id)
+    public function edit(int $id)
     {
         $users = $this->userRepoRepository->usersList();
         $taxes = $this->taxRepository->getTaxesList();
@@ -101,9 +102,14 @@ class CompanyController extends AdminBaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,int $id)
     {
-        //
+        $result = $this->companyService->update($id, $request);
+        if ($result['status']) {
+
+            return redirect()->route('admins.companies.index')->withToastSuccess(__('web.record_was_successfully_created'));
+        }
+        return redirect()->route('admins.companies.index')->withToastError($result['message']);
     }
 
     /**
@@ -114,6 +120,11 @@ class CompanyController extends AdminBaseController
      */
     public function destroy($id)
     {
-        //
+        $result = $this->companyService->delete($id);
+
+        if ($result['status']) {
+            return redirect()->route('admins.companies.index')->withToastSuccess( __('web.record_was_successfully_deleted'));
+        }
+        return redirect()->route('admins.companies.index')->withToastError($result['message']);
     }
 }

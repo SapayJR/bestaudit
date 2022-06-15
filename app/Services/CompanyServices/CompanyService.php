@@ -50,7 +50,12 @@ class CompanyService extends CoreService implements CompanyServiceInterface
 
     public function delete(int $id)
     {
-        // TODO: Implement delete() method.
+        $item = $this->model()->find($id);
+        if ($item){
+            $item->delete();
+            return ['status' => true, 'message' => 'ok'];
+        }
+        return ['status' => false, 'message' => __('web.record_not_found')];
     }
 
     private function setCompanyParams($collection)

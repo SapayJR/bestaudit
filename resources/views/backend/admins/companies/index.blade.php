@@ -77,10 +77,10 @@
                                                     <a href="#" class="btn btn-danger   "
                                                        data-confirm="{{ __('web.action_confirmation') }}|{{__('web.do_you_really_want_to_delete')}}?"
                                                        data-confirm-yes="event.preventDefault();
-                                                    document.getElementById('destroy-').submit()">
+                                                    document.getElementById('destroy-{{ $company->id }}').submit()">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
-                                                    <form id="destroy-" action="" method="post" style="display: none;">
+                                                    <form id="destroy-{{ $company->id }}" action="{{ route('admins.companies.destroy', $company->id) }}" method="post" style="display: none;">
                                                         @method('DELETE')
                                                         @csrf
                                                     </form>
