@@ -17,6 +17,6 @@ class Company extends Model
 
     public function taxes()
     {
-        return $this->hasMany(Tax::class);
+        return $this->belongsToMany(Tax::class, CompanyTax::class);
     }
 }

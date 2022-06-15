@@ -137,12 +137,13 @@
                                     <div class="form-group">
                                         <label class="d-block">Taxes</label>
                                         @foreach($taxes as $tax)
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="taxes_id" value="{{$tax->id}}" id="defaultCheck1">
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                {{ $tax->translation->title ?? ''  }} {{ $tax->tax_rate }} %
-                                            </label>
-                                        </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="taxes[]"
+                                                       value="{{$tax->id}}" id="defaultCheck1">
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    {{ $tax->translation->title ?? ''  }} {{ $tax->tax_rate }} %
+                                                </label>
+                                            </div>
                                         @endforeach
                                     </div>
                                 </div>
@@ -151,15 +152,15 @@
                                     <button type="submit"
                                             class="btn btn-primary">{{ __('web.save') }}</button>
                                 </div>
+                            </form>
                         </div>
                     </div>
-                    </form>
                 </div>
             </div>
+        </section>
     </div>
-    </div>
-    </section>
-    </div>
+
+
     <x-slot name="javascript">
         <script src="{{ asset('backend/js/modules/upload-preview/jquery.uploadPreview.min.js') }}"></script>
         <script src="{{ asset('backend/js/modules/summernote/summernote-bs4.js') }}"></script>

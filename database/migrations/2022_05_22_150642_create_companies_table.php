@@ -18,7 +18,6 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('auditor_id')->nullable();
-            $table->foreignId('taxes_id')->nullable();
             $table->string('title', 255);
             $table->string('legal_name', 255);
             $table->string('address', 255)->nullable();

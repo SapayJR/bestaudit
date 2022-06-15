@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Backend\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Repositories\Interfaces\CompanyRepoInterface;
 use App\Repositories\TaxRepository\TaxRepository;
 use App\Repositories\UserRepository\UserRepoRepository;
 use App\Services\Interfaces\CompanyServiceInterface;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\all;
 
 class CompanyController extends AdminBaseController
 {
@@ -71,11 +73,11 @@ class CompanyController extends AdminBaseController
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -86,7 +88,10 @@ class CompanyController extends AdminBaseController
      */
     public function edit($id)
     {
-        //
+        $users = $this->userRepoRepository->usersList();
+        $taxes = $this->taxRepository->getTaxesList();
+        $company = Company::with('taxes')->findOrFail($id);
+        return view('backend.admins.companies.edit', compact('company', 'users', 'taxes'));
     }
 
     /**

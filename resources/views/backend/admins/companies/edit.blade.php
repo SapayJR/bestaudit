@@ -27,7 +27,7 @@
                             <div class="card-header">
                                 <h4>Add Company</h4>
                             </div>
-                            <form action="{{ route('admins.companies.update') }}" method="post"
+                            <form action="{{ route('admins.companies.update', $company->id) }}" method="post"
                                   enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
@@ -41,7 +41,7 @@
                                         <label for="parent">User <span
                                                 class="text-danger font-weight-bold">*</span></label>
                                         <select name="user" class="form-control selectric" id="user" required>
-                                            @foreach($userID as $user)
+                                            @foreach($users as $user)
                                                 <option  value="{{ $user['id'] }}">{{ $user['firstname'] }}</option>
                                             @endforeach
                                         </select>
@@ -86,6 +86,24 @@
                                         <label>MFO</label>
                                         <input type="text" name="mfo" class="form-control invoice-input">
                                     </div>
+
+                                    <div class="card-body col-12 col-md-3 col-lg-3">
+                                        <div class="form-group">
+                                            <label class="d-block">Taxes</label>
+                                            @foreach($taxes as $tax)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="taxes[]"
+                                                           value="{{$tax->id}}" id="defaultCheck1"
+                                                  @if($company->taxes->contains($tax->id))  checked @endif >
+                                                    <label class="form-check-label" for="defaultCheck1">
+                                                        {{ $tax->translation->title ?? ''  }} {{ $tax->tax_rate }} %
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    {!! $company->taxes !!}
 
                                     <div class="card-footer text-left">
                                         <button type="submit" class="btn btn-primary">{{ __('web.save') }}</button>

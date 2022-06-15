@@ -72,7 +72,7 @@
                                                     </div>
                                                 </td>
                                                 <td  class="text-center">
-                                                    <a href="" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('admins.companies.edit', $company->id) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
 
                                                     <a href="#" class="btn btn-danger   "
                                                        data-confirm="{{ __('web.action_confirmation') }}|{{__('web.do_you_really_want_to_delete')}}?"

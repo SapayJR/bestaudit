@@ -6,7 +6,7 @@ interface CompanyServiceInterface
 {
     public function create($collection);
 
-    public function update(string $alias, $collection);
+    public function update(int $id, $collection);
 
     public function delete(int $id);
 

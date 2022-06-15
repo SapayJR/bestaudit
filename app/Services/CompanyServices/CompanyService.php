@@ -24,14 +24,28 @@ class CompanyService extends CoreService implements CompanyServiceInterface
     {
         $company = $this->model()->create($this->setCompanyParams($collection));
         if ($company) {
-            return ['status' => true, 'message' => 'ok'];
+            if (isset($collection->taxes)) {
+                $company->taxes()->attach($collection->taxes);
+                return ['status' => true, 'message' => 'ok'];
+            }
+            return ['status' => false, 'message' => __('web.record_not_found')];
         }
-        return ['status' => false, 'message' => __('web.record_not_found')];
     }
 
-    public function update(string $alias, $collection)
+    public function update(int $id, $collection)
     {
-        // TODO: Implement update() method.
+        $company = $this->model()->find($id);
+
+        if ($company) {
+            $company->update($this->setCompanyParams($collection));
+
+            if (isset($collection->taxes)) {
+                $company->taxes()->delete();
+                $company->taxes()->attach($collection->taxes);
+                return ['status' => true, 'message' => 'ok'];
+            }
+            return ['status' => false, 'message' => __('web.record_not_found')];
+        }
     }
 
     public function delete(int $id)
@@ -44,9 +58,8 @@ class CompanyService extends CoreService implements CompanyServiceInterface
         return [
             'title' => $collection->title ?? null,
             'auditor_id' => $collection->auditor_id,
-            'taxes_id' => $collection->taxes_id,
             'user_id' => $collection->user,
-            'legal_name' =>$collection->legal_name,
+            'legal_name' => $collection->legal_name,
             'Address' => $collection->Address,
             'oked' => $collection->oked,
             'ceo' => $collection->ceo,
@@ -54,7 +67,6 @@ class CompanyService extends CoreService implements CompanyServiceInterface
             'bank_name' => $collection->bank_name,
             'tin' => $collection->tin,
             'mfo' => $collection->mfo,
-
         ];
     }
 }
