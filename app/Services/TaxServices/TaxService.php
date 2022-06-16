@@ -31,14 +31,26 @@ class TaxService extends CoreService implements TaxServiceInterface
     }
 
 
-    public function update(string $alias, $collection)
+    public function update(int $id, $collection)
     {
-        // TODO: Implement update() method.
-    }
+        $tax = $this->model()->find($id);
+        if ($tax) {
+            $tax->update($this->setTaxParams($collection));
+            $this->setTranslations($tax,$collection);
+            return ['status' => true, 'message' => 'ok'];
+        }
+        return ['status' => false, 'message' => __('web.record_not_found')];
+        }
+
 
     public function delete(int $id)
     {
-        // TODO: Implement delete() method.
+        $tax = $this->model()->find($id);
+        if ($tax){
+            $tax->delete();
+            return ['status' => true, 'message' => 'ok'];
+        }
+        return ['status' => false, 'message' => __('web.record_not_found')];
     }
 
     private function setTaxParams($collection)

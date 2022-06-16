@@ -70,15 +70,15 @@
                                                     </div>
                                                 </td>
                                                 <td  class="text-center">
-                                                    <a href="" class="btn btn-info"><i class="fas fa-edit"></i></a>
+                                                    <a href="{{ route('admins.taxes.edit', $tax->id) }}" class="btn btn-info"><i class="fas fa-edit"></i></a>
 
                                                     <a href="#" class="btn btn-danger   "
                                                        data-confirm="{{ __('web.action_confirmation') }}|{{__('web.do_you_really_want_to_delete')}}?"
                                                        data-confirm-yes="event.preventDefault();
-                                                    document.getElementById('destroy-').submit()">
+                                                    document.getElementById('destroy-{{ $tax->id }}').submit()">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
-                                                    <form id="" action="" method="post" style="display: none;">
+                                                    <form id="destroy-{{ $tax->id }}" action="{{ route('admins.taxes.destroy', $tax->id) }}" method="post" style="display: none;">
                                                         @method('DELETE')
                                                         @csrf
                                                     </form>

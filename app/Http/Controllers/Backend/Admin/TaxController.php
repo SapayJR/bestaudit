@@ -78,11 +78,13 @@ class TaxController extends AdminBaseController
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Tax  $tax
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(Tax $tax)
+    public function edit( int $id)
     {
-        //
+        $tax = Tax::with('translations')->findOrFail($id);
+
+        return view('backend.admins.taxes.edit', compact('tax'));
     }
 
     /**
@@ -92,9 +94,14 @@ class TaxController extends AdminBaseController
      * @param  \App\Models\Tax  $tax
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tax $tax)
+    public function update(Request $request,int $id)
     {
-        //
+        $result = $this->taxService->update($id, $request);
+        if ($result['status']) {
+
+            return redirect()->route('admins.taxes.index')->withToastSuccess(__('web.record_was_successfully_created'));
+        }
+        return redirect()->route('admins.taxes.index')->withToastError($result['message']);
     }
 
     /**
@@ -103,8 +110,12 @@ class TaxController extends AdminBaseController
      * @param  \App\Models\Tax  $tax
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tax $tax)
+    public function destroy($id)
     {
-        //
+        $result = $this->taxService->delete($id);
+        if ($result['status']) {
+            return redirect()->route('admins.taxes.index')->withToastSuccess( __('web.record_was_successfully_deleted'));
+        }
+        return redirect()->route('admins.taxes.index')->withToastError($result['message']);
     }
 }
