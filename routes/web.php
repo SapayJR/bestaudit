@@ -1,12 +1,10 @@
 <?php
 
+use App\Http\Controllers\Backend\Admin;
+use App\Http\Controllers\Backend\Auditor;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\SettingController;
 use App\Http\Controllers\Frontend\WelcomeController;
-use App\Http\Controllers\Backend\Admin;
-use App\Http\Controllers\Backend\User;
-use App\Http\Controllers\Backend\Auditor;
-use App\Http\Controllers\Frontend;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified'], 'prefix' => 'dashboa
         Route::resource('users', Admin\UserController::class)->names('users');
         Route::resource('companies', Admin\CompanyController::class)->names('companies');
         Route::resource('taxes', Admin\TaxController::class)->names('taxes');
+        Route::resource('reports', Admin\ReportController::class)->names('reports');
 
         /* Settings */
         Route::get('/cache-clear', [SettingController::class, 'cacheClear'])->name('settings.cache.clear');
